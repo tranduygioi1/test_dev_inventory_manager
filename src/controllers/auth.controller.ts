@@ -4,9 +4,9 @@ import jwt from 'jsonwebtoken';
 import pool from '../db';
 
 // Khóa bí mật dùng để mã hóa JWT. Trong thực tế, bắt buộc phải đọc từ file .env
-const JWT_SECRET = process.env.JWT_SECRET || 'your_super_secret_key';
+const JWT_SECRET = process.env.JWT_SECRET || 'TEST_DEV';
 if (!process.env.JWT_SECRET) {
-  console.warn('⚠️ CẢNH BÁO: Chưa cấu hình JWT_SECRET trong file .env. Đang sử dụng khóa mặc định kém an toàn!');
+  console.warn('CẢNH BÁO: Chưa cấu hình JWT_SECRET trong file .env. Đang sử dụng khóa mặc định kém an toàn!');
 }
 
 export const login = async (req: Request, res: Response) => {
