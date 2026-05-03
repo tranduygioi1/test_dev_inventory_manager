@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('receiptForm');
     const toast = document.getElementById('toast');
 
+    if (!form) return; // Chỉ chạy script tạo mới trên trang chủ (home.handlebars)
+
     // Hàm chuyển số thành chữ (đơn giản hoá, có thể dùng thư viện xịn hơn)
     function readNumber(num) {
         if (num === 0) return 'Không đồng';
