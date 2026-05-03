@@ -2,7 +2,7 @@
 
 Bài test xây dựng hệ thống quản lý phiếu nhập kho bằng **Node.js**, **Express**, **TypeScript**, **PostgreSQL** và giao diện **Handlebars**.
 
-## 🚀 Hướng Dẫn Chạy Dự Án (Quick Start)
+## Hướng Dẫn Chạy Dự Án (Quick Start)
 
 ### 1. Cài đặt thư viện
 ```bash
@@ -37,7 +37,7 @@ Truy cập ứng dụng tại: **[http://localhost:3000](http://localhost:3000)*
 
 ---
 
-## 🔑 Tài Khoản Đăng Nhập Test
+## Tài Khoản Đăng Nhập Test
 
 - **Quản trị viên (Admin):** `admin` / `123456`
 - **Nhân viên (User):** `nguyenvana` / `123456`
@@ -46,7 +46,7 @@ Truy cập ứng dụng tại: **[http://localhost:3000](http://localhost:3000)*
 
 ---
 
-## 🧪 Chạy Unit Test
+## Chạy Unit Test
 ```bash
 npm test
 ```
