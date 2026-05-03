@@ -5,7 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('receiptForm');
     const toast = document.getElementById('toast');
 
-    if (!form) return; // Chỉ chạy script tạo mới trên trang chủ (home.handlebars)
+    // Chỉ chạy script tạo mới trên trang chủ (home.handlebars), dựa vào việc có nút addRowBtn hay không
+    if (!form || !addRowBtn) return;
 
     // Hàm chuyển số thành chữ (đơn giản hoá, có thể dùng thư viện xịn hơn)
     function readNumber(num) {
