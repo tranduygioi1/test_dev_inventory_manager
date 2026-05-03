@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "npx rimraf dist && tsc",
+    "setup:db": "node setup_db.js && npx ts-node src/db/seed_rbac.ts && npx ts-node src/db/seed_permissions_and_alter.ts && node alter_db.js",
     "start": "node dist/server.js",
     "dev": "ts-node src/server.ts",
     "test": "jest"
@@ -34,6 +35,7 @@
     "@types/pg": "^8.20.0",
     "@types/supertest": "^7.2.0",
     "jest": "^30.3.0",
+    "rimraf": "^6.1.3",
     "supertest": "^7.2.2",
     "ts-jest": "^29.4.9",
     "ts-node": "^10.9.2",
