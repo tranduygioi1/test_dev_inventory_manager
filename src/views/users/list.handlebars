@@ -1,0 +1,97 @@
+<div class="mb-6 flex justify-between items-center">
+    <h2 class="text-2xl font-bold">Quản lý Người Dùng</h2>
+    <button onclick="document.getElementById('createUserModal').classList.remove('hidden')" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md font-medium transition">
+        + Thêm Người Dùng Mới
+    </button>
+</div>
+
+<div class="overflow-x-auto">
+    <table class="w-full table-border">
+        <thead class="bg-gray-100">
+            <tr>
+                <th>Mã Nhân Viên</th>
+                <th>Tên Đăng Nhập</th>
+                <th>Phòng Ban</th>
+                <th>Vai Trò (Role)</th>
+                <th>Ngày Tạo</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each users}}
+            <tr>
+                <td>{{this.employee_id}}</td>
+                <td>{{this.username}}</td>
+                <td>{{this.department}}</td>
+                <td>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-semibold">
+                        {{this.role_name}}
+                    </span>
+                </td>
+                <td>{{this.created_at}}</td>
+                <td>
+                    {{#if (eq this.username 'admin')}}
+                    <span class="text-gray-400 text-sm">Không thể xóa</span>
+                    {{else}}
+                    <button onclick="deleteUser('{{this.id}}')" class="text-red-500 hover:text-red-700 font-medium text-sm">Xóa</button>
+                    {{/if}}
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<!-- Create User Modal -->
+<div id="createUserModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center">
+    <div class="bg-white p-8 rounded-md shadow-xl w-96 relative">
+        <button onclick="document.getElementById('createUserModal').classList.add('hidden')" class="absolute top-2 right-4 text-gray-500 hover:text-gray-700 font-bold text-xl">&times;</button>
+        <h3 class="text-xl font-bold mb-4">Thêm Người Dùng Mới</h3>
+        <form action="/users/create" method="POST">
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Tên Đăng Nhập</label>
+                <input type="text" name="username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Mật Khẩu</label>
+                <input type="password" name="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Mã Nhân Viên</label>
+                <input type="text" name="employee_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Phòng Ban</label>
+                <input type="text" name="department" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+            </div>
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Vai Trò</label>
+                <select name="role_id" class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    {{#each roles}}
+                    <option value="{{this.id}}">{{this.name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full focus:outline-none focus:shadow-outline">
+                Tạo Tài Khoản
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+async function deleteUser(id) {
+    if (confirm('Bạn có chắc chắn muốn xóa người dùng này?')) {
+        try {
+            const res = await fetch(`/users/${id}`, { method: 'DELETE' });
+            if (res.ok) {
+                window.location.reload();
+            } else {
+                alert('Có lỗi xảy ra khi xóa!');
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+}
+</script>

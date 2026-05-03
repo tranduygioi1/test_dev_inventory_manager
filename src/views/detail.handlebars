@@ -1,0 +1,219 @@
+<div class="mb-4 print-hide">
+    <a href="/list" class="text-blue-500 hover:text-blue-700 underline">&larr; Quay lại danh sách</a>
+</div>
+
+<div id="receiptForm" class="text-sm pointer-events-none relative">
+    <div id="loading" class="absolute inset-0 bg-white/80 flex items-center justify-center text-xl font-bold z-10">Đang tải...</div>
+    
+    <div class="flex justify-between mb-6">
+        <div>
+            <div class="flex items-center mb-1">
+                <span class="font-semibold mr-2">Đơn vị:</span>
+                <span id="department" class="border-b border-black w-48 inline-block text-center h-5"></span>
+            </div>
+            <div class="flex items-center">
+                <span class="font-semibold mr-2">Bộ phận:</span>
+                <span id="part" class="border-b border-black w-48 inline-block text-center h-5"></span>
+            </div>
+        </div>
+        <div class="text-center font-semibold">
+            <p>Mẫu số 01 - VT</p>
+            <p class="text-xs font-normal">(Ban hành theo Thông tư số 200/2014/TT-BTC</p>
+            <p class="text-xs font-normal">Ngày 22/12/2014 của Bộ Tài chính)</p>
+        </div>
+    </div>
+
+    <div class="text-center mb-6">
+        <h1 class="text-2xl font-bold uppercase mb-2">Phiếu Nhập Kho</h1>
+        <div class="flex justify-center items-center gap-2 mb-2">
+            <span>Ngày</span> <span id="day" class="border-b border-black w-10 inline-block text-center h-5"></span>
+            <span>tháng</span> <span id="month" class="border-b border-black w-10 inline-block text-center h-5"></span>
+            <span>năm</span> <span id="year" class="border-b border-black w-16 inline-block text-center h-5"></span>
+        </div>
+        <div class="flex justify-center items-center gap-4">
+            <div class="flex items-center">
+                <span class="mr-2">Số:</span>
+                <span id="receipt_number" class="border-b border-dashed border-black w-32 inline-block text-center h-5"></span>
+            </div>
+            <div class="text-left">
+                <div class="flex items-center mb-1"><span class="w-6">Nợ:</span><span id="debit" class="border-b border-dotted border-black w-20 inline-block h-5"></span></div>
+                <div class="flex items-center"><span class="w-6">Có:</span><span id="credit" class="border-b border-dotted border-black w-20 inline-block h-5"></span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-4 leading-relaxed">
+        <div class="flex">
+            <span class="whitespace-nowrap mr-2">- Họ và tên người giao:</span>
+            <span id="deliverer_name" class="border-b border-dotted border-black flex-grow inline-block h-5"></span>
+        </div>
+        <div class="flex items-center flex-wrap">
+            <span class="whitespace-nowrap mr-2">- Theo</span>
+            <span id="doc_number" class="border-b border-dotted border-black w-32 inline-block text-center mx-1 h-5"></span>
+            <span class="mx-1">ngày</span>
+            <span id="doc_day" class="border-b border-dotted border-black w-10 inline-block text-center mx-1 h-5"></span>
+            <span class="mx-1">tháng</span>
+            <span id="doc_month" class="border-b border-dotted border-black w-10 inline-block text-center mx-1 h-5"></span>
+            <span class="mx-1">năm</span>
+            <span id="doc_year" class="border-b border-dotted border-black w-16 inline-block text-center mx-1 h-5"></span>
+            <span class="mx-1">của</span>
+            <span id="doc_issuer" class="border-b border-dotted border-black flex-grow inline-block mx-1 h-5"></span>
+        </div>
+        <div class="flex">
+            <span class="whitespace-nowrap mr-2">- Nhập tại kho:</span>
+            <span id="warehouse" class="border-b border-dotted border-black flex-grow mr-4 inline-block h-5"></span>
+            <span class="whitespace-nowrap mr-2">địa điểm:</span>
+            <span id="location" class="border-b border-dotted border-black flex-grow inline-block h-5"></span>
+        </div>
+    </div>
+
+    <table class="w-full table-border mb-4">
+        <thead>
+            <tr>
+                <th rowspan="2" class="w-10">STT</th>
+                <th rowspan="2">Tên, nhãn hiệu, quy cách,<br>phẩm chất vật tư,<br>dụng cụ sản phẩm, hàng hoá</th>
+                <th rowspan="2" class="w-20">Mã<br>số</th>
+                <th rowspan="2" class="w-16">Đơn<br>vị<br>tính</th>
+                <th colspan="2">Số lượng</th>
+                <th rowspan="2" class="w-24">Đơn<br>giá</th>
+                <th rowspan="2" class="w-32">Thành<br>tiền</th>
+            </tr>
+            <tr>
+                <th class="w-20">Theo<br>chứng<br>từ</th>
+                <th class="w-20">Thực<br>nhập</th>
+            </tr>
+            <tr class="font-bold bg-gray-50">
+                <td>A</td>
+                <td>B</td>
+                <td>C</td>
+                <td>D</td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+            </tr>
+        </thead>
+        <tbody id="detailsBody">
+            <!-- Data -->
+        </tbody>
+        <tfoot>
+            <tr class="font-bold bg-gray-50">
+                <td colspan="4" class="text-left px-2">Cộng</td>
+                <td>x</td>
+                <td>x</td>
+                <td>x</td>
+                <td id="totalAmount">0</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="mb-8 leading-relaxed">
+        <div class="flex">
+            <span class="whitespace-nowrap mr-2">- Tổng số tiền (viết bằng chữ):</span>
+            <span id="total_amount_words" class="border-b border-dotted border-black flex-grow font-semibold inline-block h-5"></span>
+        </div>
+        <div class="flex">
+            <span class="whitespace-nowrap mr-2">- Số chứng từ gốc kèm theo:</span>
+            <span id="attached_docs" class="border-b border-dotted border-black flex-grow inline-block h-5"></span>
+        </div>
+    </div>
+
+    <div class="flex justify-end mb-2">
+        <span class="italic" id="bottomDate">Ngày ...... tháng ...... năm ......</span>
+    </div>
+    
+    <div class="flex justify-between text-center font-semibold mb-24">
+        <div class="w-1/4">
+            <p>Người lập phiếu</p>
+            <p class="font-normal italic text-xs">(Ký, họ tên)</p>
+        </div>
+        <div class="w-1/4">
+            <p>Người giao hàng</p>
+            <p class="font-normal italic text-xs">(Ký, họ tên)</p>
+        </div>
+        <div class="w-1/4">
+            <p>Thủ kho</p>
+            <p class="font-normal italic text-xs">(Ký, họ tên)</p>
+        </div>
+        <div class="w-1/4">
+            <p>Kế toán trưởng</p>
+            <p class="font-normal italic text-xs">(Hoặc bộ phận có nhu cầu nhập)<br>(Ký, họ tên)</p>
+        </div>
+    </div>
+</div>
+
+<div class="flex justify-center mt-6 print-hide">
+    <button type="button" onclick="window.print()" class="px-8 py-3 bg-gray-600 text-white font-bold rounded-lg shadow hover:bg-gray-700 transition">IN PHIẾU NÀY</button>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const receiptId = "{{id}}";
+        try {
+            const response = await fetch(`/api/receipts/${receiptId}`);
+            if (!response.ok) throw new Error('Không tìm thấy phiếu');
+            const data = await response.json();
+            
+            // Điền dữ liệu vào form
+            document.getElementById('department').textContent = data.department || '';
+            document.getElementById('part').textContent = data.part || '';
+            document.getElementById('receipt_number').textContent = data.receipt_number || '';
+            document.getElementById('debit').textContent = data.debit || '';
+            document.getElementById('credit').textContent = data.credit || '';
+            
+            if (data.receipt_date) {
+                const d = new Date(data.receipt_date);
+                if (!isNaN(d)) {
+                    document.getElementById('day').textContent = d.getDate().toString().padStart(2, '0');
+                    document.getElementById('month').textContent = (d.getMonth() + 1).toString().padStart(2, '0');
+                    document.getElementById('year').textContent = d.getFullYear();
+                    document.getElementById('bottomDate').textContent = `Ngày ${d.getDate().toString().padStart(2, '0')} tháng ${(d.getMonth() + 1).toString().padStart(2, '0')} năm ${d.getFullYear()}`;
+                }
+            }
+
+            document.getElementById('deliverer_name').textContent = data.deliverer_name || '';
+            document.getElementById('doc_number').textContent = data.doc_number || '';
+            
+            if (data.doc_date) {
+                const docD = new Date(data.doc_date);
+                if (!isNaN(docD)) {
+                    document.getElementById('doc_day').textContent = docD.getDate().toString().padStart(2, '0');
+                    document.getElementById('doc_month').textContent = (docD.getMonth() + 1).toString().padStart(2, '0');
+                    document.getElementById('doc_year').textContent = docD.getFullYear();
+                }
+            }
+
+            document.getElementById('doc_issuer').textContent = data.doc_issuer || '';
+            document.getElementById('warehouse').textContent = data.warehouse || '';
+            document.getElementById('location').textContent = data.location || '';
+            document.getElementById('totalAmount').textContent = data.total_amount ? parseFloat(data.total_amount).toLocaleString('en-US') : '0';
+            document.getElementById('total_amount_words').textContent = data.total_amount_words || '';
+            document.getElementById('attached_docs').textContent = data.attached_docs || '';
+
+            // Hiển thị chi tiết
+            const tbody = document.getElementById('detailsBody');
+            if (data.details && data.details.length > 0) {
+                data.details.forEach((detail, idx) => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="text-center">${idx + 1}</td>
+                        <td class="px-2">${detail.item_name || ''}</td>
+                        <td class="text-center">${detail.item_code || ''}</td>
+                        <td class="text-center">${detail.unit || ''}</td>
+                        <td class="text-center">${detail.doc_quantity || ''}</td>
+                        <td class="text-center">${detail.actual_quantity || ''}</td>
+                        <td class="text-right px-2">${detail.unit_price ? parseFloat(detail.unit_price).toLocaleString('en-US') : ''}</td>
+                        <td class="text-right px-2">${detail.total_price ? parseFloat(detail.total_price).toLocaleString('en-US') : ''}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            document.getElementById('loading').style.display = 'none';
+
+        } catch (error) {
+            console.error(error);
+            document.getElementById('loading').textContent = 'Lỗi: Không thể tải phiếu nhập kho';
+        }
+    });
+</script>

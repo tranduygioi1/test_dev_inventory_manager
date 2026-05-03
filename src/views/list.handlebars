@@ -1,0 +1,113 @@
+<div class="mb-6 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-800">Danh Sách Phiếu Nhập Kho</h1>
+    <div class="flex gap-2">
+        <input type="date" id="startDate" class="border p-2 rounded outline-none" />
+        <span class="py-2">-</span>
+        <input type="date" id="endDate" class="border p-2 rounded outline-none" />
+        <button id="filterBtn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">Lọc</button>
+    </div>
+</div>
+
+<div class="overflow-x-auto">
+    <table class="w-full text-left border-collapse border border-gray-300">
+        <thead class="bg-gray-100">
+            <tr>
+                <th class="border border-gray-300 p-3">Số Phiếu</th>
+                <th class="border border-gray-300 p-3">Ngày Lập</th>
+                <th class="border border-gray-300 p-3">Đơn Vị</th>
+                <th class="border border-gray-300 p-3">Bộ Phận</th>
+                <th class="border border-gray-300 p-3">Người Giao Hàng</th>
+                <th class="border border-gray-300 p-3">Tổng Tiền</th>
+                <th class="border border-gray-300 p-3 text-center">Hành Động</th>
+            </tr>
+        </thead>
+        <tbody id="receiptsTableBody">
+            <!-- Dữ liệu được đổ bằng Javascript -->
+            <tr>
+                <td colspan="7" class="text-center p-4 text-gray-500">Đang tải dữ liệu...</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fetchReceipts = async (start = '', end = '') => {
+            try {
+                let url = '/api/receipts';
+                if (start && end) {
+                    url += `?startDate=${start}&endDate=${end}`;
+                }
+                const response = await fetch(url);
+                const data = await response.json();
+                renderTable(data);
+            } catch (error) {
+                console.error('Lỗi khi tải danh sách phiếu:', error);
+            }
+        };
+
+        const deleteReceipt = async (id) => {
+            if (!confirm('Bạn có chắc chắn muốn xóa phiếu này không?')) return;
+            try {
+                const response = await fetch(`/api/receipts/${id}`, { method: 'DELETE' });
+                if (response.ok) {
+                    alert('Đã xóa phiếu thành công!');
+                    document.getElementById('filterBtn').click(); // Tải lại danh sách
+                } else {
+                    alert('Lỗi khi xóa phiếu!');
+                }
+            } catch (error) {
+                console.error('Lỗi xóa phiếu:', error);
+            }
+        };
+
+        window.deleteReceipt = deleteReceipt; // Gắn vào window để onClick gọi được
+
+        const canDelete = {{#if (hasPerm user.permissions 'delete_receipts')}}true{{else}}false{{/if}};
+
+        const renderTable = (data) => {
+            const tbody = document.getElementById('receiptsTableBody');
+            tbody.innerHTML = '';
+            
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center p-4 text-gray-500">Không tìm thấy phiếu nào</td></tr>';
+                return;
+            }
+
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                const dateObj = new Date(item.receipt_date);
+                const dateStr = !isNaN(dateObj) ? dateObj.toLocaleDateString('vi-VN') : '';
+                const amount = item.total_amount ? parseFloat(item.total_amount).toLocaleString('en-US') : '0';
+
+                let actionsHtml = `<a href="/view/${item.id}" class="text-blue-500 hover:text-blue-700 underline font-medium">Xem</a>`;
+                if (canDelete) {
+                    actionsHtml += ` <button onclick="deleteReceipt('${item.id}')" class="text-red-500 hover:text-red-700 underline font-medium cursor-pointer ml-2">Xóa</button>`;
+                }
+
+                tr.innerHTML = `
+                    <td class="border border-gray-300 p-3">${item.receipt_number || '-'}</td>
+                    <td class="border border-gray-300 p-3">${dateStr}</td>
+                    <td class="border border-gray-300 p-3">${item.department || '-'}</td>
+                    <td class="border border-gray-300 p-3">${item.part || '-'}</td>
+                    <td class="border border-gray-300 p-3">${item.deliverer_name || '-'}</td>
+                    <td class="border border-gray-300 p-3">${amount}</td>
+                    <td class="border border-gray-300 p-3 text-center space-x-2">
+                        ${actionsHtml}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        };
+
+        // Tải dữ liệu ban đầu
+        fetchReceipts();
+
+        // Xử lý lọc
+        document.getElementById('filterBtn').addEventListener('click', () => {
+            const start = document.getElementById('startDate').value;
+            const end = document.getElementById('endDate').value;
+            fetchReceipts(start, end);
+        });
+    });
+</script>

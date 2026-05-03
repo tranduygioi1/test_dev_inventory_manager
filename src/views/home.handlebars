@@ -1,0 +1,156 @@
+<form id="receiptForm" class="text-sm">
+    <div class="flex justify-between mb-6">
+        <div>
+            <div class="flex items-center mb-1">
+                <span class="font-semibold mr-2">Đơn vị:</span>
+                <input type="text" id="department" class="border-b border-black outline-none w-48 text-center" />
+            </div>
+            <div class="flex items-center">
+                <span class="font-semibold mr-2">Bộ phận:</span>
+                <input type="text" id="part" class="border-b border-black outline-none w-48 text-center" />
+            </div>
+        </div>
+        <div class="text-center font-semibold">
+            <p>Mẫu số 01 - VT</p>
+            <p class="text-xs font-normal">(Ban hành theo Thông tư số 200/2014/TT-BTC</p>
+            <p class="text-xs font-normal">Ngày 22/12/2014 của Bộ Tài chính)</p>
+        </div>
+    </div>
+
+    <div class="text-center mb-6">
+        <h1 class="text-2xl font-bold uppercase mb-2">Phiếu Nhập Kho</h1>
+        <div class="flex justify-center items-center gap-2 mb-2">
+            <span>Ngày</span> <input type="text" id="day" class="border-b border-black outline-none w-10 text-center" />
+            <span>tháng</span> <input type="text" id="month" class="border-b border-black outline-none w-10 text-center" />
+            <span>năm</span> <input type="text" id="year" class="border-b border-black outline-none w-16 text-center" />
+        </div>
+        <div class="flex justify-center items-center gap-4">
+            <div class="flex items-center">
+                <span class="mr-2">Số:</span>
+                <input type="text" id="receipt_number" class="border-b border-dashed border-black outline-none w-32 text-center" />
+            </div>
+            <div class="text-left">
+                <div class="flex items-center mb-1"><span class="w-6">Nợ:</span><input type="text" id="debit" class="border-b border-dotted border-black outline-none w-20" /></div>
+                <div class="flex items-center"><span class="w-6">Có:</span><input type="text" id="credit" class="border-b border-dotted border-black outline-none w-20" /></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-4 leading-relaxed">
+        <div class="flex">
+            <span class="whitespace-nowrap mr-2">- Họ và tên người giao:</span>
+            <input type="text" id="deliverer_name" class="border-b border-dotted border-black outline-none flex-grow" />
+        </div>
+        <div class="flex items-center flex-wrap">
+            <span class="whitespace-nowrap mr-2">- Theo</span>
+            <input type="text" id="doc_number" class="border-b border-dotted border-black outline-none w-32 text-center mx-1" placeholder="chứng từ số" />
+            <span class="mx-1">ngày</span>
+            <input type="text" id="doc_day" class="border-b border-dotted border-black outline-none w-10 text-center mx-1" />
+            <span class="mx-1">tháng</span>
+            <input type="text" id="doc_month" class="border-b border-dotted border-black outline-none w-10 text-center mx-1" />
+            <span class="mx-1">năm</span>
+            <input type="text" id="doc_year" class="border-b border-dotted border-black outline-none w-16 text-center mx-1" />
+            <span class="mx-1">của</span>
+            <input type="text" id="doc_issuer" class="border-b border-dotted border-black outline-none flex-grow mx-1" />
+        </div>
+        <div class="flex">
+            <span class="whitespace-nowrap mr-2">- Nhập tại kho:</span>
+            <input type="text" id="warehouse" class="border-b border-dotted border-black outline-none flex-grow mr-4" />
+            <span class="whitespace-nowrap mr-2">địa điểm:</span>
+            <input type="text" id="location" class="border-b border-dotted border-black outline-none flex-grow" />
+        </div>
+    </div>
+
+    <table class="w-full table-border mb-4">
+        <thead>
+            <tr>
+                <th rowspan="2" class="w-10">STT</th>
+                <th rowspan="2">Tên, nhãn hiệu, quy cách,<br>phẩm chất vật tư,<br>dụng cụ sản phẩm, hàng hoá</th>
+                <th rowspan="2" class="w-20">Mã<br>số</th>
+                <th rowspan="2" class="w-16">Đơn<br>vị<br>tính</th>
+                <th colspan="2">Số lượng</th>
+                <th rowspan="2" class="w-24">Đơn<br>giá</th>
+                <th rowspan="2" class="w-32">Thành<br>tiền</th>
+                <th rowspan="2" class="w-10 print-hide bg-white border-none"></th>
+            </tr>
+            <tr>
+                <th class="w-20">Theo<br>chứng<br>từ</th>
+                <th class="w-20">Thực<br>nhập</th>
+            </tr>
+            <tr class="font-bold bg-gray-50">
+                <td>A</td>
+                <td>B</td>
+                <td>C</td>
+                <td>D</td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td class="border-none bg-white print-hide"></td>
+            </tr>
+        </thead>
+        <tbody id="detailsBody">
+            <!-- Dòng dữ liệu mẫu sẽ được thêm bằng JS -->
+        </tbody>
+        <tfoot>
+            <tr class="font-bold bg-gray-50">
+                <td colspan="4" class="text-left px-2">Cộng</td>
+                <td>x</td>
+                <td>x</td>
+                <td>x</td>
+                <td id="totalAmount">0</td>
+                <td class="border-none bg-white print-hide"></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <button type="button" id="addRowBtn" class="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition print-hide">+ Thêm dòng</button>
+
+    <div class="mb-8 leading-relaxed">
+        <div class="flex">
+            <span class="whitespace-nowrap mr-2">- Tổng số tiền (viết bằng chữ):</span>
+            <input type="text" id="total_amount_words" class="border-b border-dotted border-black outline-none flex-grow font-semibold bg-transparent" />
+        </div>
+        <div class="flex">
+            <span class="whitespace-nowrap mr-2">- Số chứng từ gốc kèm theo:</span>
+            <input type="text" id="attached_docs" class="border-b border-dotted border-black outline-none flex-grow bg-transparent" />
+        </div>
+    </div>
+
+    <div class="flex justify-end mb-2">
+        <span class="italic">Ngày ...... tháng ...... năm ......</span>
+    </div>
+    
+    <div class="flex justify-between text-center font-semibold mb-24">
+        <div class="w-1/4">
+            <p>Người lập phiếu</p>
+            <p class="font-normal italic text-xs">(Ký, họ tên)</p>
+        </div>
+        <div class="w-1/4">
+            <p>Người giao hàng</p>
+            <p class="font-normal italic text-xs">(Ký, họ tên)</p>
+        </div>
+        <div class="w-1/4">
+            <p>Thủ kho</p>
+            <p class="font-normal italic text-xs">(Ký, họ tên)</p>
+        </div>
+        <div class="w-1/4">
+            <p>Kế toán trưởng</p>
+            <p class="font-normal italic text-xs">(Hoặc bộ phận có nhu cầu nhập)<br>(Ký, họ tên)</p>
+        </div>
+    </div>
+
+    <div class="flex justify-center gap-4 border-t pt-6 print-hide">
+        {{#if (hasPerm user.permissions 'create_receipts')}}
+        <button type="submit" class="px-8 py-3 bg-green-600 text-white font-bold rounded-lg shadow hover:bg-green-700 transition">LƯU PHIẾU NHẬP KHO</button>
+        {{else}}
+        <button type="button" class="px-8 py-3 bg-gray-400 text-white font-bold rounded-lg shadow cursor-not-allowed" title="Bạn không có quyền tạo phiếu">LƯU PHIẾU NHẬP KHO</button>
+        {{/if}}
+        <button type="button" id="printBtn" class="px-8 py-3 bg-gray-600 text-white font-bold rounded-lg shadow hover:bg-gray-700 transition">IN PHIẾU</button>
+    </div>
+</form>
+
+<!-- Modal thông báo -->
+<div id="toast" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded shadow-lg transition-opacity duration-300 opacity-0 pointer-events-none">
+    Lưu thành công!
+</div>

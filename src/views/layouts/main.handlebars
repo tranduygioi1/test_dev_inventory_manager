@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phiếu Nhập Kho</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .table-border,
+        .table-border th,
+        .table-border td {
+            border: 1px solid #000;
+            border-collapse: collapse;
+        }
+
+        .table-border th,
+        .table-border td {
+            padding: 4px 8px;
+            text-align: center;
+        }
+
+        /* HEADER STYLING */
+        :root {
+            --theme-blue: #009BDF;
+            --theme-blue-dark: #007DC3;
+        }
+
+        .navbar-custom {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: 0.5px;
+            color: var(--theme-blue) !important;
+        }
+
+        .nav-link {
+            color: #4b5563;
+            /* gray-600 */
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--theme-blue);
+            background-color: #f3f4f6;
+            /* gray-100 */
+        }
+
+        /* SETTINGS DROPDOWN */
+        .settings-dropdown {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .settings-dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 16px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            min-width: 250px;
+            overflow: hidden;
+            z-index: 100;
+            border: 1px solid #f3f4f6;
+        }
+
+        .settings-dropdown.show .settings-dropdown-menu {
+            display: block;
+            animation: fadeInDown 0.2s ease-out;
+        }
+
+        .settings-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            color: #4b5563;
+            font-weight: 600;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .settings-dropdown-item:hover {
+            background-color: #f9fafb;
+            color: var(--theme-blue);
+        }
+
+        /* USER DROPDOWN */
+        .user-dropdown {
+            position: relative;
+        }
+
+        .user-dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+            overflow: hidden;
+            z-index: 100;
+        }
+
+        .user-dropdown.show .user-dropdown-menu {
+            display: block;
+            animation: fadeInDown 0.2s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .user-dropdown-item {
+            display: block;
+            padding: 12px 20px;
+            color: #4b5563;
+            font-weight: 600;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .user-dropdown-item:hover {
+            background-color: #fef2f2;
+            /* red-50 */
+            color: #dc2626;
+            /* red-600 */
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background-image: linear-gradient(135deg, var(--theme-blue) 0%, var(--theme-blue-dark) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            box-shadow: 0 2px 5px rgba(0, 155, 223, 0.3);
+        }
+
+        @media print {
+            @page {
+                margin: 1.5cm;
+            }
+
+            body {
+                background-color: white !important;
+                padding-top: 0 !important;
+            }
+
+            .print-hide {
+                display: none !important;
+            }
+
+            .shadow-lg {
+                box-shadow: none !important;
+            }
+
+            .bg-gray-100 {
+                background-color: white !important;
+            }
+
+            .p-10 {
+                padding: 0 !important;
+            }
+
+            .max-w-5xl {
+                max-w: none !important;
+                width: 100% !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex flex-col items-center min-h-screen pt-24">
+
+    <nav class="navbar-custom fixed top-0 w-full z-50 px-6 py-3 flex justify-between items-center print-hide">
+        <div class="flex items-center gap-8">
+            <!-- Brand Logo -->
+            <a href="/" class="navbar-brand">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M4 3a2 2 0 100 4h12a2 2 0 100-4H4z" />
+                    <path fill-rule="evenodd"
+                        d="M3 8h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm5 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"
+                        clip-rule="evenodd" />
+                </svg>
+                QUẢN LÝ KHO
+            </a>
+
+            <!-- Navigation Links -->
+            <div class="hidden md:flex gap-2 items-center">
+                {{#if (hasPerm user.permissions 'create_receipts')}}
+                <a href="/" class="nav-link">Tạo Phiếu</a>
+                {{/if}}
+                {{#if (hasPerm user.permissions 'view_receipts')}}
+                <a href="/list" class="nav-link">Danh Sách</a>
+                {{/if}}
+
+                <div class="settings-dropdown cursor-pointer ml-2" onclick="this.classList.toggle('show')"
+                    id="settingsMenuBtn" style="display: none;">
+                    <div class="p-2 hover:bg-gray-100 rounded-full transition text-gray-500 hover:text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </div>
+                    <div class="settings-dropdown-menu">
+                        {{#if (hasPerm user.permissions 'manage_users')}}
+                        <a href="/users" class="settings-dropdown-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                            Quản Lý Người Dùng
+                        </a>
+                        <script>document.getElementById('settingsMenuBtn').style.display = 'flex';</script>
+                        {{/if}}
+                        {{#if (hasPerm user.permissions 'manage_roles')}}
+                        <a href="/roles" class="settings-dropdown-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-500" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                            Quản Lý Vai Trò
+                        </a>
+                        <script>document.getElementById('settingsMenuBtn').style.display = 'flex';</script>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Area -->
+        {{#if user}}
+        <div class="user-dropdown cursor-pointer" onclick="this.classList.toggle('show')">
+            <div
+                class="flex items-center gap-3 hover:bg-gray-100 p-2 rounded-lg transition border border-transparent hover:border-gray-200">
+                <div class="text-right hidden sm:block">
+                    <div class="text-sm font-bold text-gray-800">{{user.username}}</div>
+                    <div class="text-xs text-gray-500 capitalize">{{user.role}}</div>
+                </div>
+                <div class="user-avatar">{{user.username.[0]}}</div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </div>
+
+            <div class="user-dropdown-menu border border-gray-100">
+                <div class="px-5 py-3 border-b border-gray-100 sm:hidden">
+                    <div class="text-sm font-bold text-gray-800">{{user.username}}</div>
+                    <div class="text-xs text-gray-500 capitalize">{{user.role}}</div>
+                </div>
+                <!-- Close dropdown if clicking outside (optional advanced UX) -->
+                <a href="/logout" class="user-dropdown-item flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    Đăng Xuất
+                </a>
+            </div>
+        </div>
+        {{/if}}
+    </nav>
+
+    <div class="bg-white p-10 shadow-lg rounded-md w-full max-w-5xl mb-8">
+        {{{body}}}
+    </div>
+    <script src="/script.js"></script>
+</body>
+
+</html>
